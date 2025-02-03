@@ -1,23 +1,26 @@
 package com.automation.pages;
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
+
+import com.microsoft.playwright.*;
+
 public class RegisterPage {
-    private final Page page;
-    private final Locator usernameInput;
-    private final Locator emailInput;
-    private final Locator passwordInput;
-    private final Locator signUpButton;
+    private Page page;
+
     public RegisterPage(Page page) {
         this.page = page;
-        usernameInput = page.locator("input[name='username']");
-        emailInput = page.locator("input[name='email']");
-        passwordInput = page.locator("input[name='password']");
-        signUpButton = page.locator("text=Sign up");
     }
-    public void register(String username, String email, String password) {
-        usernameInput.fill(username);
-        emailInput.fill(email);
-        passwordInput.fill(password);
-        signUpButton.click();
+
+    public void navigateToRegisterPage() {
+        page.navigate("https://www.demoblaze.com/");
+        page.locator("text=Sign up").click();  // Click Sign Up button
+    }
+
+    public void register(String username, String password) {
+        page.locator("#sign-username").fill(username);  // Username field
+        page.locator("#sign-password").fill(password);  // Password field
+        page.locator("text=Sign up").click();  // Click Sign Up button
+    }
+
+    public String getSuccessMessage() {
+        return page.locator(".alert-success").textContent();  // Get success message after registration
     }
 }
